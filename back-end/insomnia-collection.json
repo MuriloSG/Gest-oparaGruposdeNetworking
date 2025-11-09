@@ -1,0 +1,159 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-11-09T00:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v8.4.5",
+  "resources": [
+    {
+      "_id": "req_root",
+      "parentId": "wrk_gestao_networking",
+      "modified": 1699491600000,
+      "created": 1699491600000,
+      "name": "Gestão Networking API",
+      "_type": "workspace",
+      "description": "API para Gestão de Grupos de Networking"
+    },
+    {
+      "_id": "fld_auth",
+      "parentId": "req_root",
+      "modified": 1699491600000,
+      "created": 1699491600000,
+      "name": "Auth",
+      "description": "Autenticação",
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_login",
+      "parentId": "fld_auth",
+      "modified": 1699491600000,
+      "created": 1699491600000,
+      "url": "http://localhost:3000/auth/login",
+      "name": "Login",
+      "description": "Autenticar usuário",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"email\": \"john@example.com\",\n\t\"password\": \"Test@123456\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "fld_users",
+      "parentId": "req_root",
+      "modified": 1699491600000,
+      "created": 1699491600000,
+      "name": "Users",
+      "description": "Gerenciamento de Usuários",
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_create_user",
+      "parentId": "fld_users",
+      "modified": 1699491600000,
+      "created": 1699491600000,
+      "url": "http://localhost:3000/users",
+      "name": "Create User",
+      "description": "Criar novo usuário",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"full_name\": \"John Doe\",\n\t\"email\": \"john@example.com\",\n\t\"password\": \"Test@123456\",\n\t\"is_admin\": true,\n\t\"is_member\": true\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "req_list_users",
+      "parentId": "fld_users",
+      "modified": 1699491600000,
+      "created": 1699491600000,
+      "url": "http://localhost:3000/users",
+      "name": "List Users",
+      "description": "Listar todos os usuários",
+      "method": "GET",
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login', 'b64::JC5hY2Nlc3NfdG9rZW4=::46b', 'never', 60 %}"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "req_get_user",
+      "parentId": "fld_users",
+      "modified": 1699491600000,
+      "created": 1699491600000,
+      "url": "http://localhost:3000/users/1",
+      "name": "Get User",
+      "description": "Buscar usuário por ID",
+      "method": "GET",
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login', 'b64::JC5hY2Nlc3NfdG9rZW4=::46b', 'never', 60 %}"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "req_update_user",
+      "parentId": "fld_users",
+      "modified": 1699491600000,
+      "created": 1699491600000,
+      "url": "http://localhost:3000/users/1",
+      "name": "Update User",
+      "description": "Atualizar usuário",
+      "method": "PATCH",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"full_name\": \"John Doe Updated\",\n\t\"is_member\": false\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login', 'b64::JC5hY2Nlc3NfdG9rZW4=::46b', 'never', 60 %}"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "req_delete_user",
+      "parentId": "fld_users",
+      "modified": 1699491600000,
+      "created": 1699491600000,
+      "url": "http://localhost:3000/users/1",
+      "name": "Delete User",
+      "description": "Deletar usuário",
+      "method": "DELETE",
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login', 'b64::JC5hY2Nlc3NfdG9rZW4=::46b', 'never', 60 %}"
+        }
+      ],
+      "_type": "request"
+    }
+  ]
+}
