@@ -22,6 +22,7 @@ model User {
   is_member     Boolean  @default(false)
   created_at    DateTime @default(now()) @db.Timestamptz()
 
+  profile       MemberProfile?
   groupsAsAdmin Group[]
 }
 
@@ -46,9 +47,26 @@ model MembershipIntention {
   position   String?
   group_id   Int
   status     String   @default("pending") // pending, approved, rejected
-  token      String? 
+  token      String?  @unique
   created_at DateTime @default(now()) @db.Timestamptz()
 
   group      Group    @relation(fields: [group_id], references: [id])
 }
 
+model MemberProfile {
+  id                Int      @id @default(autoincrement())
+  user_id          Int      @unique
+  bio              String?   @db.Text
+  professional_area String?
+  interests        String[]
+  linkedin_url     String?
+  website          String?
+  skills           String[]
+  goals            String?   @db.Text
+  business_size    String?
+  target_audience  String?   @db.Text
+  created_at       DateTime  @default(now()) @db.Timestamptz()
+  updated_at       DateTime  @default(now()) @db.Timestamptz()
+
+  user             User      @relation(fields: [user_id], references: [id])
+}

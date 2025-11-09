@@ -73,6 +73,24 @@ Observações:
 - Grupos criados por administradores
 - Cada grupo tem um admin responsável
 
+#### Tabela: member_profiles
+
+| Campo           | Tipo                                | Descrição |
+|-----------------|-------------------------------------|-----------|
+| id              | SERIAL PRIMARY KEY                  | ID único do perfil |
+| user_id         | INTEGER REFERENCES users(id)        | ID do usuário |
+| bio             | TEXT                                | Biografia/Descrição |
+| professional_area| VARCHAR(255)                       | Área de atuação |
+| interests       | TEXT[]                             | Áreas de interesse |
+| linkedin_url    | VARCHAR(255)                        | URL do LinkedIn |
+| website         | VARCHAR(255)                        | Site pessoal/profissional |
+| skills          | TEXT[]                             | Habilidades principais |
+| goals           | TEXT                                | Objetivos no grupo |
+| business_size   | VARCHAR(50)                        | Tamanho do negócio |
+| target_audience | TEXT                                | Público-alvo |
+| created_at      | TIMESTAMP DEFAULT NOW()             | Data de criação |
+| updated_at      | TIMESTAMP DEFAULT NOW()             | Última atualização |
+
 #### Tabela: group_members
 
 | Campo         | Tipo                                | Descrição |

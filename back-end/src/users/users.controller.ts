@@ -4,6 +4,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../auth/current-user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import type { JwtPayload } from '../auth/types/jwt-payload.type';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard)
@@ -16,17 +17,17 @@ export class UsersController {
   }
 
   @Get('me')
-  getProfile(@CurrentUser() user) {
-    return this.usersService.findOne(user.id);
+  getProfile(@CurrentUser() user: JwtPayload) {
+    return this.usersService.findOne(user.sub);
   }
 
   @Get()
-  findAll(@CurrentUser() user) {
+  findAll(@CurrentUser() user: JwtPayload) {
     return this.usersService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string, @CurrentUser() user) {
+  findOne(@Param('id') id: string, @CurrentUser() user: JwtPayload) {
     return this.usersService.findOne(+id);
   }
 
@@ -34,9 +35,9 @@ export class UsersController {
   update(
     @Param('id') id: string, 
     @Body() updateUserDto: UpdateUserDto,
-    @CurrentUser() user,
+    @CurrentUser() user: JwtPayload,
   ) {
-    if (user.id !== +id) {
+    if (user.sub !== +id) {
       throw new UnauthorizedException('Você só pode atualizar seu próprio perfil');
     }
     return this.usersService.update(+id, updateUserDto);

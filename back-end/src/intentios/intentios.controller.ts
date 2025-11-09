@@ -5,6 +5,7 @@ import { UpdateIntentioDto } from './dto/update-intentio.dto';
 import { AdminGuard } from '../auth/admin.guard';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../auth/current-user.decorator';
+import type { JwtPayload } from '../auth/types/jwt-payload.type';
 
 @Controller('intentios')
 export class IntentiosController {
@@ -19,7 +20,7 @@ export class IntentiosController {
   @UseGuards(JwtAuthGuard)
   findAll(
     @Query('groupId') groupId?: string,
-    @CurrentUser() user?: any,
+    @CurrentUser() user?: JwtPayload,
   ) {
     const isAdmin = user?.is_admin ?? false;
     return this.intentiosService.findAll(

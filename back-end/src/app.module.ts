@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { GroupsModule } from './groups/groups.module';
 import { IntentiosModule } from './intentios/intentios.module';
+import { ProfilesModule } from './profiles/profiles.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { IntentiosModule } from './intentios/intentios.module';
     UsersModule,
     AuthModule,
     GroupsModule,
-    IntentiosModule
+    IntentiosModule,
+    ProfilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
