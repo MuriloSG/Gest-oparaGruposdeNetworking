@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { GroupsModule } from './groups/groups.module';
 import { IntentiosModule } from './intentios/intentios.module';
 import { ProfilesModule } from './profiles/profiles.module';
+import { ReferralsModule } from './referrals/referrals.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ProfilesModule } from './profiles/profiles.module';
     GroupsModule,
     IntentiosModule,
     ProfilesModule,
+    ReferralsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -24,6 +24,8 @@ model User {
 
   profile       MemberProfile?
   groupsAsAdmin Group[]
+  referralsGiven    BusinessReferral[] @relation("ReferralsGiven")
+  referralsReceived BusinessReferral[] @relation("ReferralsReceived")
 }
 
 model Group {
@@ -69,4 +71,20 @@ model MemberProfile {
   updated_at       DateTime  @default(now()) @db.Timestamptz()
 
   user             User      @relation(fields: [user_id], references: [id])
+}
+
+model BusinessReferral {
+  id              Int      @id @default(autoincrement())
+  from_user_id    Int
+  to_user_id      Int
+  description     String   @db.Text
+  opportunity_type String
+  potential_value String
+  status          String   @default("pending") // pending, in_progress, closed_won, closed_lost
+  feedback        String?  @db.Text
+  created_at      DateTime @default(now()) @db.Timestamptz()
+  updated_at      DateTime @default(now()) @db.Timestamptz()
+
+  from_user       User     @relation("ReferralsGiven", fields: [from_user_id], references: [id])
+  to_user         User     @relation("ReferralsReceived", fields: [to_user_id], references: [id])
 }
