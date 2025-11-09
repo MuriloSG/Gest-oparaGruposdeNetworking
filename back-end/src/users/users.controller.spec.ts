@@ -20,9 +20,23 @@ describe('UsersController', () => {
     updated_at: new Date(),
   };
 
+  const mockAdminUser = {
+    ...mockUser,
+    id: 2,
+    is_admin: true,
+    email: 'admin@example.com',
+  };
+
   const mockCurrentUser = {
-    id: 1,
+    sub: 1,
     email: 'test@example.com',
+    is_admin: false,
+  };
+
+  const mockAdminCurrentUser = {
+    sub: 2,
+    email: 'admin@example.com',
+    is_admin: true,
   };
 
   beforeEach(async () => {
@@ -70,20 +84,47 @@ describe('UsersController', () => {
   });
 
   describe('findAll', () => {
-    it('should return an array of users', async () => {
-      const result = await controller.findAll(mockCurrentUser);
+    it('should return an array of users for admin user', async () => {
+      const result = await controller.findAll(mockAdminCurrentUser);
       
       expect(result).toEqual([mockUser]);
       expect(service.findAll).toHaveBeenCalled();
     });
+
+    it('should throw UnauthorizedException for non-admin user', async () => {
+      try {
+        await controller.findAll(mockCurrentUser);
+        fail('Deveria ter lançado UnauthorizedException');
+      } catch (error) {
+        expect(error).toBeInstanceOf(UnauthorizedException);
+        expect(error.message).toBe('Acesso negado. Apenas administradores podem listar todos os usuários.');
+      }
+    });
   });
 
   describe('findOne', () => {
-    it('should return a user by id', async () => {
+    it('should return a user by id for admin user', async () => {
+      const result = await controller.findOne('1', mockAdminCurrentUser);
+      
+      expect(result).toEqual(mockUser);
+      expect(service.findOne).toHaveBeenCalledWith(1);
+    });
+
+    it('should return own user profile', async () => {
       const result = await controller.findOne('1', mockCurrentUser);
       
       expect(result).toEqual(mockUser);
       expect(service.findOne).toHaveBeenCalledWith(1);
+    });
+
+    it('should throw UnauthorizedException when accessing other user profile as non-admin', async () => {
+      try {
+        await controller.findOne('2', mockCurrentUser);
+        fail('Deveria ter lançado UnauthorizedException');
+      } catch (error) {
+        expect(error).toBeInstanceOf(UnauthorizedException);
+        expect(error.message).toBe('Você só pode visualizar seu próprio perfil');
+      }
     });
   });
 
@@ -104,7 +145,7 @@ describe('UsersController', () => {
         is_member: true
       };
 
-      const differentUser = { ...mockCurrentUser, id: 2 };
+      const differentUser = { ...mockCurrentUser, sub: 2 };
 
       try {
         await controller.update('1', updateUserDto, differentUser);
@@ -121,15 +162,35 @@ describe('UsersController', () => {
       const result = await controller.getProfile(mockCurrentUser);
       
       expect(result).toEqual(mockUser);
-      expect(service.findOne).toHaveBeenCalledWith(mockCurrentUser.id);
+      expect(service.findOne).toHaveBeenCalledWith(mockCurrentUser.sub);
     });
   });
 
   describe('remove', () => {
-    it('should remove a user', async () => {
-      await controller.remove('1');
+    it('should remove a user when admin', async () => {
+      await controller.remove('1', mockAdminCurrentUser);
       
       expect(service.remove).toHaveBeenCalledWith(1);
+    });
+
+    it('should throw UnauthorizedException when non-admin tries to remove user', async () => {
+      try {
+        await controller.remove('1', mockCurrentUser);
+        fail('Deveria ter lançado UnauthorizedException');
+      } catch (error) {
+        expect(error).toBeInstanceOf(UnauthorizedException);
+        expect(error.message).toBe('Apenas administradores podem remover usuários');
+      }
+    });
+
+    it('should throw UnauthorizedException when admin tries to remove themselves', async () => {
+      try {
+        await controller.remove('2', mockAdminCurrentUser);
+        fail('Deveria ter lançado UnauthorizedException');
+      } catch (error) {
+        expect(error).toBeInstanceOf(UnauthorizedException);
+        expect(error.message).toBe('Você não pode remover seu próprio usuário');
+      }
     });
   });
 });

@@ -63,15 +63,15 @@ describe('UsersService', () => {
 
       const result = await service.create(createUserDto);
 
+      const { password, ...expectedUserData } = createUserDto;
+      const expectedCreateData = {
+        ...expectedUserData,
+        password_hash: 'hashedPassword',
+      };
+
       expect(mockUserRepository.findOneByEmail).toHaveBeenCalledWith(createUserDto.email);
       expect(bcrypt.hash).toHaveBeenCalledWith(createUserDto.password, 10);
-      expect(mockUserRepository.create).toHaveBeenCalledWith({
-        full_name: createUserDto.full_name,
-        email: createUserDto.email,
-        password_hash: 'hashedPassword',
-        is_admin: createUserDto.is_admin,
-        is_member: createUserDto.is_member,
-      });
+      expect(mockUserRepository.create).toHaveBeenCalledWith(expectedCreateData);
       expect(result).toEqual(mockUser);
     });
 
