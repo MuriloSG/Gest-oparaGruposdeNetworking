@@ -47,6 +47,7 @@ Observações:
 | phone         | VARCHAR(50)                         | Telefone |
 | company       | VARCHAR(255)                        | Empresa |
 | position      | VARCHAR(255)                        | Cargo |
+| group_id      | INTEGER REFERENCES groups(id)       | ID do grupo |
 | status        | VARCHAR(20) DEFAULT 'pending'       | pending, approved, rejected |
 | token         | VARCHAR(255)                        | Token para cadastro |
 | user_id       | INTEGER REFERENCES users(id)        | ID do usuário criado |

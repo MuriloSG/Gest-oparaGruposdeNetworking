@@ -21,4 +21,17 @@ model User {
   is_admin      Boolean  @default(false)
   is_member     Boolean  @default(false)
   created_at    DateTime @default(now()) @db.Timestamptz()
+
+  groupsAsAdmin Group[]
 }
+
+model Group {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  admin_id    Int
+  created_at  DateTime @default(now()) @db.Timestamptz()
+
+  admin       User     @relation(fields: [admin_id], references: [id])
+}
+
