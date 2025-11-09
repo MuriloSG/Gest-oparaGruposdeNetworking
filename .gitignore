@@ -1,0 +1,24 @@
+# compiled output
+back-end/dist
+back-end/node_modules
+back-end/npm-debug.log
+back-end/yarn-error.log
+
+# Logs
+back-end/logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# TypeScript
+/*.tsbuildinfo
+
+# env
+.env
+.env.*.local
